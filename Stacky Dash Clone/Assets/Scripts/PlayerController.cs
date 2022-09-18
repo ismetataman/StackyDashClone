@@ -7,13 +7,66 @@ public class PlayerController : MonoBehaviour
     private Vector3 startTouchPosition;
     private Vector3 currentPosition;
     private Vector3 endTouchPosition;
-    private bool stopTouch = false;
+    private bool isMove = false;
+    private bool isCollision = false;
+    private bool swipeRight =false;
+    private bool swipeLeft =false;
+    private bool swipeForward =false;
+    private bool swipeBack =false;
+    private Rigidbody _rb;
+    private Animator _anim;
 
+    public LayerMask layer;
     public float swipeRange;
+    public float swipeSpeed;
+    public bool pathCreatorActive = false;
+    private void Start() 
+    {
+        _rb = GetComponent<Rigidbody>();
+        _anim = this.gameObject.transform.GetChild(1).GetComponent<Animator>();
+        isMove = true;
+        isCollision = false;
+    }
+
     void Update()
     {
+        RaycastHit hit;
+
         Swipe();
+        if(Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out hit,0.55511f,layer))
+        {
+            isMove = false;
+            isCollision = true;
+            _anim.SetBool("swim",true);
+            Debug.DrawRay(this.transform.position,transform.TransformDirection(Vector3.forward)* hit.distance,Color.green);
+        }
+        else
+        {
+            isCollision = false;
+            _anim.SetBool("swim",false);
+        }
+        if(isMove == true)
+        {
+            if(swipeRight == true)
+            {
+                transform.position += Vector3.right * swipeSpeed * Time.deltaTime;
+            }
+            if(swipeLeft == true)
+            {
+                transform.position += Vector3.left * swipeSpeed * Time.deltaTime;
+            }
+            if(swipeForward == true)
+            {
+                transform.position += Vector3.forward * swipeSpeed * Time.deltaTime;
+            }
+            if(swipeBack == true)
+            {
+                transform.position += Vector3.back * swipeSpeed * Time.deltaTime;
+            }
+        }
+        
     }
+
     public void Swipe()
     {
         if(Input.touchCount>0 && Input.GetTouch(0).phase == TouchPhase.Began)
@@ -24,41 +77,70 @@ public class PlayerController : MonoBehaviour
         {
             currentPosition = Input.GetTouch(0).position;
             Vector3 Distance = currentPosition - startTouchPosition;
-
-            if(!stopTouch)
+            if(isCollision == true)
             {
                 if(Distance.x < -swipeRange)
                 {
-                    this.gameObject.transform.Translate(Vector3.left *5);
-                    Debug.Log("Left");
-                    stopTouch = true;
+                    isMove = true;
+                    transform.rotation = Quaternion.Euler(0,-90,0);
+                    swipeLeft = true;
+                    swipeRight = false;
+                    swipeForward = false;
+                    swipeBack = false;
                 }
                 else if(Distance.x > swipeRange)
                 {
-                    this.gameObject.transform.Translate(Vector3.right *5);
-                    Debug.Log("Right");
-                    stopTouch = true;
+                    isMove = true;
+                    transform.rotation = Quaternion.Euler(0,90,0);
+                    swipeRight = true;
+                    swipeLeft = false;
+                    swipeBack = false;
+                    swipeForward = false;
                 }
                 else if(Distance.y > swipeRange)
                 {
-                    this.gameObject.transform.Translate(Vector3.forward *5);
-                    Debug.Log("Up");
-                    stopTouch = true;
+                    isMove = true;
+                    transform.rotation = Quaternion.Euler(0,360,0);
+                    swipeForward = true;
+                    swipeBack = false;
+                    swipeLeft = false;
+                    swipeRight = false;
+                    
                 }
-                 else if(Distance.y < -swipeRange)
+                else if(Distance.y < -swipeRange)
                 {
-                    this.gameObject.transform.Translate(Vector3.back *5);
-                    Debug.Log("Down");
-                    stopTouch = true;
+                    isMove = true;
+                    transform.rotation = Quaternion.Euler(0,-180,0);
+                    swipeBack = true;
+                    swipeForward = false;
+                    swipeLeft = false;
+                    swipeRight = false;
                 }
             }
         }
         if(Input.touchCount>0 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
-            stopTouch = false;
             endTouchPosition = Input.GetTouch(0).position;
             Vector3 Distance = endTouchPosition - startTouchPosition;
         }
        
+    }
+    private void OnTriggerEnter(Collider other) 
+    {
+        if(other.gameObject.CompareTag("PathCreator"))
+        {
+            pathCreatorActive = true;
+        }
+        if(other.gameObject.CompareTag("UnStack"))
+        {
+            Stacklist.instance.stack.RemoveAt(Stacklist.instance.stack.Count -1);
+            Destroy(Stacklist.instance.stack[Stacklist.instance.stack.Count-1]);
+            other.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            other.gameObject.GetComponent<BoxCollider>().enabled = false;
+        }
+        if(other.gameObject.CompareTag("PathCreatorDisactive"))
+        {
+            pathCreatorActive = false;
+        } 
     }
 }

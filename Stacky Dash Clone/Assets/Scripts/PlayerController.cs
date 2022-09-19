@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     public float swipeRange;
     public float swipeSpeed;
     public bool pathCreatorActive = false;
+    public bool pathCreatorSecondActive = false;
+    public bool pathCreatorBackActive = false;
+    public bool pathCreatorBackSecondActive = false;
     private void Start() 
     {
         _rb = GetComponent<Rigidbody>();
@@ -129,18 +132,47 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.CompareTag("PathCreator"))
         {
-            pathCreatorActive = true;
-        }
-        if(other.gameObject.CompareTag("UnStack"))
-        {
-            Stacklist.instance.stack.RemoveAt(Stacklist.instance.stack.Count -1);
-            Destroy(Stacklist.instance.stack[Stacklist.instance.stack.Count-1]);
-            other.gameObject.GetComponent<MeshRenderer>().enabled = true;
-            other.gameObject.GetComponent<BoxCollider>().enabled = false;
+            if(swipeForward)
+            {
+                pathCreatorActive = true;
+            }
+            if(swipeBack)
+            {
+                pathCreatorBackActive = false;
+            }
         }
         if(other.gameObject.CompareTag("PathCreatorDisactive"))
         {
-            pathCreatorActive = false;
+            if(swipeForward)
+            {
+                pathCreatorActive = false;
+            }
+            if(swipeBack)
+            {
+                pathCreatorBackActive = true;
+            }
+        } 
+        if(other.gameObject.CompareTag("PathCreatorSecond"))
+        {
+            if(swipeForward)
+            {
+                pathCreatorSecondActive = true;
+            }
+            if(swipeBack)
+            {
+                pathCreatorBackSecondActive = false;
+            }
+        }
+        if(other.gameObject.CompareTag("PathCreatorDisactiveSecond"))
+        {
+            if(swipeForward)
+            {
+                pathCreatorSecondActive = false;
+            }
+            if(swipeBack)
+            {
+                pathCreatorBackSecondActive = true;
+            }
         } 
     }
 }

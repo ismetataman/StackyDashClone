@@ -8,6 +8,8 @@ TagManager:
   - PathCreator
   - PathCreatorDisactive
   - UnStack
+  - PathCreatorSecond
+  - PathCreatorDisactiveSecond
   layers:
   - Default
   - TransparentFX

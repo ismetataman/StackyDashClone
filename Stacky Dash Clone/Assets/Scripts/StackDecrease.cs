@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StackDecrease : MonoBehaviour
 {
+    public CameraFollow camerafollow;
     public StackController stackcontroller;
     public bool newCamPos = false;
     public Material otherColor;
@@ -23,6 +24,7 @@ public class StackDecrease : MonoBehaviour
         {
             //To move camera first position
             newCamPos = false;
+            camerafollow.offset.z += -5f;
         }
     }
     private void OnTriggerExit(Collider other) 

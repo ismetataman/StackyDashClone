@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public bool pathCreatorSecondActive = false;
     public bool pathCreatorBackActive = false;
     public bool pathCreatorBackSecondActive = false;
+    public bool pathCreatorFinish = false;
     private void Start() 
     {
         _rb = GetComponent<Rigidbody>();
@@ -173,6 +174,13 @@ public class PlayerController : MonoBehaviour
             {
                 pathCreatorBackSecondActive = true;
             }
-        } 
+        }
+        if(other.gameObject.CompareTag("PathCreatorFinish"))
+        {
+            if(swipeForward)
+            {
+                pathCreatorFinish = true;
+            }
+        }  
     }
 }

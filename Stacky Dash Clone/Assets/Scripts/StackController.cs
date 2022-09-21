@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class StackController : MonoBehaviour
 {
+    public UIManager uimanager;
     public Vector3 stackPos;
     void Start()
     {
@@ -22,6 +23,13 @@ public class StackController : MonoBehaviour
             other.transform.DOLocalMove(stackPos,0.2f);
             this.gameObject.transform.GetChild(1).transform.localPosition += new Vector3(0,0.9f,0);
             Debug.Log("Listeye eklendi");
+
+            //ScoreIncrease
+            uimanager.ScoreIncrease();
+        }
+        if(other.gameObject.CompareTag("ColorScore"))
+        {
+            uimanager.ScoreIncrease();
         }
     }
 }

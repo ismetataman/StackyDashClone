@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class FinishColorChange : MonoBehaviour
 {
+    public UIManager uimanager;
     public Material[] allMaterials;
     public GameObject[] allPlatforms;
     public GameObject[] sidePlatforms;
     private int colorCounter = 0;
+
     private void OnTriggerExit(Collider other)
     {
         if(other.gameObject.CompareTag("Color"))

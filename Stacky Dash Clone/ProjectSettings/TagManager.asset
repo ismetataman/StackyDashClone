@@ -13,6 +13,7 @@ TagManager:
   - PathCreatorFinish
   - Disable
   - Color
+  - ColorScore
   layers:
   - Default
   - TransparentFX

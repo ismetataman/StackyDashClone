@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 startTouchPosition;
     private Vector3 currentPosition;
     private Vector3 endTouchPosition;
-    private bool isMove = false;
+    public bool isMove = false;
     private bool isCollision = false;
     private bool swipeRight =false;
     private bool swipeLeft =false;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StackDecrease : MonoBehaviour
 {
+    public UIManager uIManager;
     public CameraFollow camerafollow;
     public StackController stackcontroller;
     public bool newCamPos = false;

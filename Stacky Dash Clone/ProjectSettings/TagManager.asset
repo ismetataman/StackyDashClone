@@ -11,6 +11,8 @@ TagManager:
   - PathCreatorSecond
   - PathCreatorDisactiveSecond
   - PathCreatorFinish
+  - Disable
+  - Color
   layers:
   - Default
   - TransparentFX

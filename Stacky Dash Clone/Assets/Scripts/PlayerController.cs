@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-
         Swipe();
         if(Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out hit,0.55511f,layer))
         {
@@ -181,6 +180,14 @@ public class PlayerController : MonoBehaviour
             {
                 pathCreatorFinish = true;
             }
-        }  
+        }
+        if(other.gameObject.CompareTag("Disable"))
+        {
+            if(swipeForward)
+            {
+                pathCreatorFinish = false;
+                _anim.SetBool("win",true);
+            }
+        }
     }
 }

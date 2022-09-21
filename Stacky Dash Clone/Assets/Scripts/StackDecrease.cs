@@ -7,6 +7,7 @@ public class StackDecrease : MonoBehaviour
     public CameraFollow camerafollow;
     public StackController stackcontroller;
     public bool newCamPos = false;
+    public bool lastCamPos = false;
     public Material otherColor;
 
     private void OnTriggerEnter(Collider other) 
@@ -25,6 +26,10 @@ public class StackDecrease : MonoBehaviour
             //To move camera first position
             newCamPos = false;
             camerafollow.offset.z += -5f;
+        }
+        if(other.gameObject.CompareTag("PathCreatorFinish"))
+        {
+            lastCamPos = true;
         }
     }
     private void OnTriggerExit(Collider other) 
